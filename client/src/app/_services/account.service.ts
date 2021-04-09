@@ -8,7 +8,7 @@ import { User } from '../_model/user';
 })
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
-  private currentUserSource = new ReplaySubject<User>(1);
+  private currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
 
@@ -44,6 +44,6 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem("user");
-    this.currentUserSource.next(undefined);
+    this.currentUserSource.next(null);
   }
 }
