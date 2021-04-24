@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "../client/src/app/members/member-detail/member-detail.component.scss"
+    ],
+    "names": [],
+    "file": "member-detail.component.css"
+}

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,gBAAgB,EAChB,cAAc,CAAC,EACb,MAAM,EAAE,OAAO,GAChB",
+    "sources": [
+        "../client/src/app/nav/nav.component.scss"
+    ],
+    "names": [],
+    "file": "nav.component.css"
+}
