@@ -55,7 +55,6 @@ export class MemberDetailComponent implements OnInit {
       .subscribe((member) => {
         this.member = member;
         this.galleryImages = this.getImages();
-        console.log(this.getImages());
       });
   }
 }
