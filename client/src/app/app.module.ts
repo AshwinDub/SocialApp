@@ -25,6 +25,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { CastPipe } from './_pipe/cast.pipe';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     TextInputComponent,
     CastPipe,
     DateInputComponent,
+    MemberMessagesComponent,
   ],
   imports: [
     BrowserModule,
