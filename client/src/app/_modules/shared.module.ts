@@ -19,7 +19,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     NgxGalleryModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-      timeOut: 1000,
+      timeOut: 4000,
       positionClass: 'toast-bottom-right',
     }),
     TabsModule.forRoot(),
