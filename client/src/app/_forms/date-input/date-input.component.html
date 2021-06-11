@@ -3,7 +3,7 @@
     type="text"
     [class.is-valid]="ngControl.touched && ngControl.invalid"
     class="form-control"
-    [formControl]="ngControl.control"
+    [formControl]="$any(ngControl.control)"
     placeholder="{{ label }}"
     bsDatepicker
     [bsConfig]="bsConfig"
