@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import * as Peer from 'peerjs';
+import Peer from 'peerjs';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
@@ -118,17 +118,19 @@ export class CallService {
     }
   }
   onCallClose() {
-    (this.remoteStreamBs as BehaviorSubject<MediaStream>).value
-      .getTracks()
-      .forEach((track) => {
+    let remote = (this.remoteStreamBs as BehaviorSubject<MediaStream>).value;
+    if (remote) {
+      remote.getTracks().forEach((track) => {
         track.stop();
       });
-    (this.remoteStreamBs as BehaviorSubject<MediaStream>).value
-      .getTracks()
-      .forEach((track) => {
+    }
+    let local = (this.localStreamBs as BehaviorSubject<MediaStream>).value;
+    if (local) {
+      local.getTracks().forEach((track) => {
         track.stop();
       });
-    this.toastrService.info('Call Ended');
+    }
+    // this.toastrService.info('Call Ended');
   }
   public closeMediaCall() {
     this.mediaCall?.close();
@@ -142,6 +144,7 @@ export class CallService {
     this.peer?.disconnect();
     this.peer?.destroy();
   }
+  public callDecline() {}
   generateUniqueId(): string {
     return (Math.random().toString(36) + '0000000000000000000').substr(2, 16);
   }

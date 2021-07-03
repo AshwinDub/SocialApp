@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -44,5 +44,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     TimeagoModule,
     ModalModule,
   ],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class SharedModule {}

@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../_model/user';
+import { CallService } from './call.service';
+import { ConfirmService } from './confirm.service';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,13 @@ export class PresenceService {
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
 
-  constructor(private toastr: ToastrService, private router: Router) {}
+  constructor(
+    private toastr: ToastrService,
+    private router: Router,
+    private confirmService: ConfirmService,
+    private callService: CallService,
+    private messageService: MessageService
+  ) {}
 
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -53,6 +62,27 @@ export class PresenceService {
           this.router.navigateByUrl('/members/' + username + '?tab=3')
         );
     });
+    this.hubConnection.on(
+      'NewCallReceiving',
+      ({ username, knownAs, peerId }) => {
+        debugger;
+        this.confirmService
+          .confirm(
+            'Incoming call',
+            knownAs + ' is calling',
+            'Accept',
+            'Decline'
+          )
+          .pipe(take(1))
+          .subscribe((isAccepted) => {
+            if (isAccepted) {
+              this.callService.establishMediaCall(peerId);
+            } else {
+              this.messageService.callDecline(username);
+            }
+          });
+      }
+    );
   }
 
   stopHubConnection() {

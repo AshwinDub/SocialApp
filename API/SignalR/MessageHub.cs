@@ -93,6 +93,35 @@ namespace API.SignalR
             }
         }
 
+        public async Task MakeCall(MakeCallDto makeCallDto)
+        {
+            var userName = Context.User.GetUserName();
+
+            if (userName == makeCallDto.RecipientUsername.ToLower())
+                throw new HubException("You cannot send message to yourself");
+
+            var sender = await unitOfWork.UserRepository.GetUserByUsernameAsync(userName);
+            var recipient = await unitOfWork.UserRepository.GetUserByUsernameAsync(makeCallDto.RecipientUsername);
+
+            if (recipient == null) throw new HubException("User not found");
+
+            var connections = await presenceTracker.GetConnectionsForUser(recipient.UserName);
+            if (connections != null)
+            {
+                await presenceHub.Clients.Clients(connections).SendAsync("NewCallReceiving",
+                new { username = sender.UserName, knownAs = sender.KnownAs, peerId = makeCallDto.PeerId });
+            }
+        }
+        public async Task DeclineCall(MakeCallDto makeCallDto)
+        {
+            var userName = Context.User.GetUserName();
+            var recipient = await unitOfWork.UserRepository.GetUserByUsernameAsync(makeCallDto.RecipientUsername);
+
+            if (recipient == null) throw new HubException("User not found");
+
+            var groupName = GetGroupName(userName, makeCallDto.RecipientUsername);
+            await Clients.Group(groupName).SendAsync("CallDecline", new { isCallDecline = true });
+        }
         private async Task<Group> AddToGroup(string groupName)
         {
             var group = await unitOfWork.MessageRepository.GetMessageGroup(groupName);

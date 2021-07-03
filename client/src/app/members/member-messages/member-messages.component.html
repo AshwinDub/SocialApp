@@ -73,6 +73,15 @@
             Send
             <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
           </button>
+          <button
+            [disabled]="loading"
+            class="btn btn-primary"
+            type="button"
+            (click)="makeCall()"
+          >
+            Call
+            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+          </button>
         </div>
       </div>
     </form>

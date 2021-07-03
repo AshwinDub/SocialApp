@@ -8,6 +8,7 @@ import { BusyService } from '../busy.service';
 import { Group } from '../_model/group';
 import { Message } from '../_model/message';
 import { User } from '../_model/user';
+import { CallService } from './call.service';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 @Injectable({
@@ -20,7 +21,11 @@ export class MessageService {
   private messageThreadSource = new BehaviorSubject<Message[]>([]);
   messageThread$ = this.messageThreadSource.asObservable();
 
-  constructor(private http: HttpClient, private busyService: BusyService) {}
+  constructor(
+    private http: HttpClient,
+    private busyService: BusyService,
+    private callService: CallService
+  ) {}
 
   createHubConnection(user: User, otherUsername: string) {
     this.busyService.busy();
@@ -43,6 +48,11 @@ export class MessageService {
       this.messageThread$.pipe(take(1)).subscribe((messages) => {
         this.messageThreadSource.next([...messages, message]);
       });
+    });
+    this.hubConnection.on('CallDecline', ({ isCallDecline }) => {
+      if (isCallDecline) {
+        this.callService.closeMediaCall();
+      }
     });
     this.hubConnection.on('UpdatedGroup', (group: Group) => {
       if (group.connections.some((x) => x.username === otherUsername)) {
@@ -87,6 +97,22 @@ export class MessageService {
       .invoke('SendMessage', {
         recipientUsername: username,
         content,
+      })
+      .catch((error) => console.log(error));
+  }
+
+  async makeCall(username: string, peerId: string) {
+    return this.hubConnection
+      .invoke('MakeCall', {
+        recipientUsername: username,
+        peerId,
+      })
+      .catch((error) => console.log(error));
+  }
+  async callDecline(username: string) {
+    return this.hubConnection
+      .invoke('DeclineCall', {
+        recipientUsername: username,
       })
       .catch((error) => console.log(error));
   }

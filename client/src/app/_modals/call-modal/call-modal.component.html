@@ -6,7 +6,7 @@
       mat-raised-button
       color="warn"
       class="m-2"
-      [disabled]="!(this.callService.isCallStarted$ | async)"
+      [disabled]="!this.callService.isCallStarted$"
       (click)="endCall()"
     >
       End Call

@@ -5,8 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { CallService } from 'src/app/_services/call.service';
 
@@ -22,7 +20,7 @@ export class CallModalComponent implements OnInit, OnDestroy {
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
 
-  constructor(public bsModalRef: BsModalRef, public callService: CallService) {}
+  constructor(public callService: CallService) {}
 
   ngOnDestroy(): void {
     this.callService.closeMediaCall();
