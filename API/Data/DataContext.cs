@@ -25,6 +25,12 @@ namespace API.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogContent> BlogContents { get; set; }
+        public DbSet<BlogLikes> BlogLikes { get; set; }
+        public DbSet<BlogComment> blogComments { get; set; }
+        public DbSet<NotificationCategory> NotificationCategories { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -65,6 +71,9 @@ namespace API.Data
                 .HasOne(u => u.Sender)
                 .WithMany(m => m.MessagesSent)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<BlogLikes>()
+            .HasKey(k => new { k.BlogId, k.LikedByUserId });
 
             builder.ApplyUtcDateTimeConverter();
         }

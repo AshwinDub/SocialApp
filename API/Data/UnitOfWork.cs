@@ -12,13 +12,16 @@ namespace API.Data
         {
             this.mapper = mapper;
             this.context = context;
-
         }
         public ILikesRepository LikesRepository => new LikesRepository(context);
 
         public IUserRepository UserRepository => new UserRepository(context, mapper);
 
         public IMessageRepository MessageRepository => new MessageRepository(context, mapper);
+
+        public INotificationRepository NotificationRepository => new NotificationRepository(context, mapper);
+
+        public IBlogRepository BlogRepository => new BlogRepository(context, mapper);
 
         public async Task<bool> Complete()
         {

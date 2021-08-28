@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import Peer from 'peerjs';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,12 @@ export class CallService {
   isCallStartedBs = new Subject<boolean>();
   isCallStarted$ = this.isCallStartedBs.asObservable();
 
-  constructor(private toastrService: ToastrService) {}
+  peerBs = new Subject<Peer>();
+  peerBs$ = this.peerBs.asObservable();
+
+  constructor(private toastrService: ToastrService) {
+    this.peerBs$.pipe(take(1)).subscribe((peer) => this.peer == peer);
+  }
 
   initPeer(): string {
     let id = this.generateUniqueId();
@@ -39,6 +45,7 @@ export class CallService {
       };
       try {
         this.peer = new Peer(id, peerJsOptions);
+        this.peerBs.next(this.peer);
         return id;
       } catch (error) {
         console.error(error);
@@ -55,6 +62,9 @@ export class CallService {
         audio: true,
       });
 
+      if (!this.peer || this.peer.disconnected) {
+        this.initPeer();
+      }
       const connection = this.peer.connect(remotePeerId);
 
       connection.on('error', (error) => {
