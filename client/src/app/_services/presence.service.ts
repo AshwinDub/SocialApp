@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { CallModalComponent } from '../_modals/call-modal/call-modal.component';
 import { User } from '../_model/user';
 import { CallService } from './call.service';
 import { ConfirmService } from './confirm.service';
@@ -18,13 +20,15 @@ export class PresenceService {
   private hubConnection!: HubConnection;
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
+  bsModalRef!: BsModalRef;
 
   constructor(
     private toastr: ToastrService,
     private router: Router,
     private confirmService: ConfirmService,
     private callService: CallService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private modalService: BsModalService
   ) {}
 
   createHubConnection(user: User) {
@@ -65,7 +69,6 @@ export class PresenceService {
     this.hubConnection.on(
       'NewCallReceiving',
       ({ username, knownAs, peerId }) => {
-        debugger;
         this.confirmService
           .confirm(
             'Incoming call',
@@ -77,6 +80,23 @@ export class PresenceService {
           .subscribe((isAccepted) => {
             if (isAccepted) {
               this.callService.establishMediaCall(peerId);
+              this.callService.isCallStarted$
+                .pipe(take(1))
+                .subscribe((isCallStarted) => {
+                  if (isCallStarted) {
+                    const config = {
+                      class: 'modal-dialog-centered modal-lg',
+                      initialState: {
+                        peerId: peerId,
+                        isCallStarted: true,
+                      },
+                    };
+                    this.bsModalRef = this.modalService.show(
+                      CallModalComponent,
+                      config
+                    );
+                  }
+                });
             } else {
               this.messageService.callDecline(username);
             }

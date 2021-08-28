@@ -33,6 +33,7 @@ namespace API.Extensions
                 {
                     // Use connection string from file.
                     connStr = config.GetConnectionString("DefaultConnection");
+                    options.UseSqlServer(connStr);
                 }
                 else
                 {
@@ -51,11 +52,10 @@ namespace API.Extensions
                     var pgPort = pgHostPort.Split(":")[1];
 
                     connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};SSL Mode=Require;Trust Server Certificate=true";
+                    // Whether the connection string came from the local development configuration file
+                    // or from the environment variable from Heroku, use it to set up your DbContext.
+                    options.UseNpgsql(connStr);
                 }
-
-                // Whether the connection string came from the local development configuration file
-                // or from the environment variable from Heroku, use it to set up your DbContext.
-                options.UseNpgsql(connStr);
             });
 
             return services;

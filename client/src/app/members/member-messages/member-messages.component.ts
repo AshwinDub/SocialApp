@@ -58,7 +58,7 @@ export class MemberMessagesComponent implements OnInit, OnDestroy {
 
   makeCall() {
     const config = {
-      class: 'modal-dialog-centered',
+      class: 'modal-dialog-centered modal-lg',
       initialState: {
         peerId: this.peerId,
         isCallStarted: false,
