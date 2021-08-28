@@ -25,24 +25,42 @@
         </li>
       </ng-container>
     </ul>
-    <div
-      class="dropdown"
+    <ul
+      class="navbar-nav float-right"
       *ngIf="accountService.currentUser$ | async as user"
-      dropdown
     >
-      <img
-        src="{{ user.photoUrl || './assets/default-avatar.jpg' }}"
-        alt="{{ user.username }}"
-      />
-      <a class="dropdown-toggle text-light ml-2" dropdownToggle
-        >Welcome {{ user.knownAs || user.username | titlecase }}</a
-      >
-      <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" (click)="logout()">Logout</a>
-      </div>
-    </div>
+      <li class="nav-item dropdown" dropdown>
+        <a class="nav-link waves-effect waves-dark pr-3 pt-3" dropdownToggle>
+          <i class="fa fa-bell"></i>
+        </a>
+        <div class="dropdown-menu mt-3" *dropdownMenu>
+          <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <div
+          class="dropdown"
+          *ngIf="accountService.currentUser$ | async as user"
+          dropdown
+        >
+          <img
+            src="{{ user.photoUrl || './assets/default-avatar.jpg' }}"
+            alt="{{ user.username }}"
+          />
+          <a class="dropdown-toggle text-light ml-2" dropdownToggle
+            >Welcome {{ user.knownAs || user.username | titlecase }}</a
+          >
+          <div class="dropdown-menu mt-3" *dropdownMenu>
+            <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+
     <form
       *ngIf="(accountService.currentUser$ | async) === null"
       #loginForm="ngForm"

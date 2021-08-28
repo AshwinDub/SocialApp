@@ -21,7 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         if (error) {
-          debugger;
           switch (error.status) {
             case 400:
               if (error.error.errors) {
@@ -41,7 +40,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             case 401:
               this.toastr.error(error.statusText, error.status);
               break;
-            case 401:
+            case 404:
               this.router.navigateByUrl('/not-found');
               break;
             case 500:
