@@ -1,21 +1,9 @@
-.card {
-  border: none;
+body {
+  margin-top: 20px;
+  background: #eee;
 }
-
-// .chat {
-//   list-style: none;
-//   margin: 0;
-//   padding: 0;
-// }
-
-// .chat li {
-//   margin-bottom: 10px;
-//   padding-bottom: 10px;
-//   border-bottom: 1px dotted #b3a9a9;
-// }
-
-.rounded-circle {
-  max-height: 50px;
+.row.row-broken {
+  padding-bottom: 0;
 }
 .col-inside-lg {
   padding: 20px;
@@ -123,7 +111,7 @@
 }
 .chat-body .answer .name {
   font-size: 14px;
-  line-height: 25px;
+  line-height: 36px;
 }
 .chat-body .answer.left .avatar .status {
   right: 4px;
@@ -137,9 +125,9 @@
   border-radius: 8px 8px 8px 0;
 }
 .chat-body .answer .text {
-  padding: 8px;
+  padding: 12px;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 26px;
   position: relative;
 }
 .chat-body .answer.left .text:before {
@@ -160,8 +148,8 @@
   color: #333333;
 }
 .chat-body .answer .time {
-  font-size: 12px;
-  line-height: 35px;
+  font-size: 16px;
+  line-height: 36px;
   position: relative;
   padding-bottom: 1px;
 }
@@ -179,13 +167,13 @@
   left: 4px;
 }
 .chat-body .answer.right .text {
-  background: #9c6460;
+  background: #7266ba;
   color: #ffffff;
   border-radius: 8px 8px 0 8px;
 }
 .chat-body .answer.right .text:before {
   right: -30px;
-  border-left-color: #9c6460;
+  border-left-color: #7266ba;
   border-left-width: 12px;
 }
 .chat-body .answer.right .time {

@@ -4,7 +4,7 @@
       class="btn btn-primary"
       btnRadio="Unread"
       [(ngModel)]="container"
-      (click)="loadMessages()"
+      (click)="loadMessages('Unread')"
     >
       <i class="fa fa-envelope"></i> Unread
     </button>
@@ -12,7 +12,7 @@
       class="btn btn-primary"
       btnRadio="Inbox"
       [(ngModel)]="container"
-      (click)="loadMessages()"
+      (click)="loadMessages('Inbox')"
     >
       <i class="fa fa-envelope-open"></i> Inbox
     </button>
@@ -20,7 +20,7 @@
       class="btn btn-primary"
       btnRadio="Outbox"
       [(ngModel)]="container"
-      (click)="loadMessages()"
+      (click)="loadMessages('Outbox')"
     >
       <i class="fa fa-paper-plane"></i> Outbox
     </button>
@@ -49,23 +49,27 @@
     >
       <td>{{ message.content }}</td>
       <td>
-        <div *ngIf="container === 'Outbox'">
-          <img
-            class="img-circle rounded-circle mr-2"
-            src="{{
-              message.recipientPhotoUrl || './assets/default-avatar.jpg'
-            }}"
-            alt="{{ message.recipientUsername }}"
-          />
-          <strong>{{ message.recipientUsername | titlecase }}</strong>
-        </div>
-        <div *ngIf="container !== 'Outbox'">
-          <img
-            class="img-circle rounded-circle mr-2"
-            src="{{ message.senderPhotoUrl || './assets/default-avatar.jpg' }}"
-            alt="{{ message.senderUsername }}"
-          />
-          <strong>{{ message.senderUsername | titlecase }}</strong>
+        <div class="col-12 row">
+          <div class="col-6">
+            <img
+              class="img-circle rounded-circle mr-2"
+              src="{{
+                message.senderPhotoUrl || './assets/default-avatar.jpg'
+              }}"
+              alt="{{ message.senderUsername }}"
+            />
+            <strong>{{ message.senderUsername | titlecase }}</strong>
+          </div>
+          <div class="col-6" *ngIf="container === 'Outbox'">
+            <img
+              class="img-circle rounded-circle mr-2"
+              src="{{
+                message.recipientPhotoUrl || './assets/default-avatar.jpg'
+              }}"
+              alt="{{ message.recipientUsername }}"
+            />
+            <strong>{{ message.recipientUsername | titlecase }}</strong>
+          </div>
         </div>
       </td>
       <td>{{ message.messageSent | timeago }}</td>

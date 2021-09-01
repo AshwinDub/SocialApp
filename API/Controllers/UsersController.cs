@@ -41,6 +41,9 @@ namespace API.Controllers
                 userParams.Gender = gender == "male" ? "female" : "male";
 
             var users = await unitOfWork.UserRepository.GetMemberAsync(userParams);
+            var likedUsers = await unitOfWork.LikesRepository.GetUserLike(User.GetUserId(), users.Select(x => x.Id));
+
+            users.ForEach(x => x.IsLiked = likedUsers.Any(y => y.LikedUserId == x.Id));
 
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 

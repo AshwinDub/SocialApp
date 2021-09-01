@@ -21,7 +21,10 @@ namespace API.Data
         {
             return await context.Likes.FindAsync(sourceUserId, likedUserId);
         }
-
+        public async Task<List<LikedUsers>> GetUserLike(int sourceUserId, IEnumerable<int> likedUserId)
+        {
+            return await context.Likes.Where(x => x.SourceUserId == sourceUserId && likedUserId.Any(y => y == x.LikedUserId)).ToListAsync();
+        }
         public async Task<AppUser> GetUserWithLikes(int userId)
         {
             return await context.Users

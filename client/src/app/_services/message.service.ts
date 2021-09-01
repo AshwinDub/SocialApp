@@ -49,11 +49,6 @@ export class MessageService {
         this.messageThreadSource.next([...messages, message]);
       });
     });
-    this.hubConnection.on('CallDecline', ({ isCallDecline }) => {
-      if (isCallDecline) {
-        this.callService.closeMediaCall();
-      }
-    });
     this.hubConnection.on('UpdatedGroup', (group: Group) => {
       if (group.connections.some((x) => x.username === otherUsername)) {
         this.messageThread$.pipe(take(1)).subscribe((messages) => {

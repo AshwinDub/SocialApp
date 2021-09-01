@@ -95,6 +95,14 @@ export class PresenceService {
                       CallModalComponent,
                       config
                     );
+                    this.callService.isCallStarted$
+                      .pipe(take(1))
+                      .subscribe((isStarted) => {
+                        if (!isStarted) {
+                          this.bsModalRef.hide();
+                          this.callService.destroyPeer();
+                        }
+                      });
                   }
                 });
             } else {
@@ -103,6 +111,12 @@ export class PresenceService {
           });
       }
     );
+    this.hubConnection.on('CallDecline', ({ isCallDecline }) => {
+      if (isCallDecline) {
+        this.callService.closeMediaCall();
+        this.callService.isCallStartedBs.next(false);
+      }
+    });
   }
 
   stopHubConnection() {

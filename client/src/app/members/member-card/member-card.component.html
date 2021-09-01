@@ -35,6 +35,7 @@
             <span
               class="hour ml-1"
               *ngIf="
+                member.lastActive &&
                 !(presence.onlineUsers$ | async)?.includes(member.username)
               "
               ><i class="fa fa-clock-o clock"></i>
@@ -46,6 +47,7 @@
           <button
             (click)="addLike(member)"
             class="btn btn-outline-dark btn-sm px-2"
+            [class.active]="member.isLiked"
           >
             <i class="fa fa-heart"></i>
           </button>

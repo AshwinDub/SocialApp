@@ -23,10 +23,11 @@ export class MessagesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMessages();
+    this.loadMessages(this.container);
   }
 
-  loadMessages() {
+  loadMessages(container: string) {
+    this.container = container;
     this.loading = true;
     this.messageService
       .getMessages(this.pageNumber, this.pageSize, this.container)
@@ -52,7 +53,8 @@ export class MessagesComponent implements OnInit {
       });
   }
   pageChanged(event: any) {
+    if (this.pageNumber === event.page) return;
     this.pageNumber = event.page;
-    this.loadMessages();
+    this.loadMessages(this.container);
   }
 }

@@ -114,13 +114,16 @@ namespace API.SignalR
         }
         public async Task DeclineCall(MakeCallDto makeCallDto)
         {
-            var userName = Context.User.GetUserName();
             var recipient = await unitOfWork.UserRepository.GetUserByUsernameAsync(makeCallDto.RecipientUsername);
 
             if (recipient == null) throw new HubException("User not found");
 
-            var groupName = GetGroupName(userName, makeCallDto.RecipientUsername);
-            await Clients.Group(groupName).SendAsync("CallDecline", new { isCallDecline = true });
+            var connections = await presenceTracker.GetConnectionsForUser(recipient.UserName);
+            if (connections != null)
+            {
+                await presenceHub.Clients.Clients(connections).SendAsync("CallDecline",
+                new { isCallDecline = true });
+            }
         }
         private async Task<Group> AddToGroup(string groupName)
         {
