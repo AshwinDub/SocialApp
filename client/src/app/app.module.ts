@@ -33,6 +33,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './_modals/roles-modal/roles-modal.component';
 import { ConfirmModalComponent } from './_modals/confirm-modal/confirm-modal.component';
 import { CallModalComponent } from './_modals/call-modal/call-modal.component';
+import { ChatRoomComponent } from './messages/chat-room/chat-room.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { CallModalComponent } from './_modals/call-modal/call-modal.component';
     RolesModalComponent,
     ConfirmModalComponent,
     CallModalComponent,
+    ChatRoomComponent,
   ],
   imports: [
     BrowserModule,
